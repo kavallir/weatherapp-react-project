@@ -7,9 +7,18 @@ export default function WeatherForecast (props) {
 let [loaded, setLoaded] = useState(false);
 let [forecast, setForecast] = useState(null);
 
-useEffect (() => {
-setLoaded(false);
-}, [props.coordinates]);
+    useEffect (() => {
+    setLoaded(false);
+    }, [props.coordinates]);
+
+    function load (){
+        let apiKey = `9tf8b32027ebcbc4fod15cda0efbf2e3`;
+        let longitude = props.coordinates.longitude;
+        let latitude = props.coordinates.latitude;
+        let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${longitude}&lat=${latitude}&key=${apiKey}&units=metric`;
+    
+        axios.get(apiUrl).then(handleResponse);
+}
 
 
     function handleResponse (response){
@@ -35,11 +44,7 @@ setLoaded(false);
                 </div>
             );
     } else {
-        let apiKey = `9tf8b32027ebcbc4fod15cda0efbf2e3`;
-        let longitude = props.coordinates.longitude;
-        let latitude = props.coordinates.latitude;
-        let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lon=${longitude}&lat=${latitude}&key=${apiKey}&units=metric`;
-        axios.get(apiUrl).then(handleResponse);
+        load();
         return null;
     }
 
